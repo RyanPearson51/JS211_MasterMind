@@ -52,24 +52,25 @@ const generateHint = (guess) =>  {
   return hintString;
   
 }
-
+let continueGame;
 const mastermind = (guess) => {
   solution = 'abcd'; // Comment this out to generate a random solution
+  let hint = generateHint(guess);
+    let guessHint = `guess ${board.length+1}: ${guess} : ${hint}`
+    board.push(guessHint);
   if (guess == solution) {
     console.log('You guessed it!');
-    console.log(`turn ${board.length+1} was the correct answer! (${solution})`)
-    let hint = generateHint(guess);
-    let guessHint = `turn ${board.length+1}: ${guess} : ${hint}`
-    board.push(guessHint);
+    console.log(`guess ${board.length+1} was the correct answer! (${solution})`)
     console.log(board)
+    continueGame = false;
     return 'You guessed it!';
   } else {
-    let hint = generateHint(guess);
-    let guessHint = `turn ${board.length+1}: ${guess} : ${hint}`
-    board.push(guessHint);
+    console.log('guess again!')
   }
   if (board.length === 10) {
     console.log('game over! you ran out of turns');
+    console.log(`the correct answer was '${solution}'`)
+    continueGame = false;
   } else{
     console.log('guess again!')
   }
@@ -80,6 +81,10 @@ const getPrompt = () =>  {
   console.log('make your 4 letter guess')
   rl.question('guess: ', (guess) => {
     mastermind(guess);
+    if(continueGame == false){
+      console.log('game over!');
+      return;
+    }
     printBoard();
     getPrompt();
   });
